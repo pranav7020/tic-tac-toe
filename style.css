@@ -1,0 +1,71 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --background: #1d1d1f;
+  --primary-color: #3d3c40;
+  --secondary-color: #4d4b52;
+  --font-color: #f1f0f5;
+  --cell-size: calc(((clamp(300px, 100vmin, 500px) - 100px) / 3));
+}
+
+body {
+  background-color: var(--background);
+  font-family: "Varela Round", sans-serif;
+}
+
+main {
+  position: absolute;
+  height: calc(var(--cell-size) * 3 + 250px);
+  overflow: hidden;
+  border: 3px solid white;
+  color: var(--font-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+section {
+  display: grid;
+  grid-template-columns: repeat(3, var(--cell-size));
+  gap: 20px;
+}
+
+section > div {
+  position: relative;
+  padding-top: 100%;
+  border-radius: 10px;
+  background-color: var(--primary-color);
+  display: grid;
+  place-items: center;
+  font-weight: bolder;
+  cursor: pointer;
+}
+
+section > div:hover {
+  background-color: var(--secondary-color);
+}
+
+section > div > p {
+  position: absolute;
+  font-size: clamp(40px, 12vmin, 90px);
+  user-select: none;
+}
+
+button {
+  padding: 5px 10px;
+  font-size: 30px;
+  color: var(--font-color);
+  background: none;
+  outline: none;
+  border: none;
+}
