@@ -36,7 +36,6 @@ function userMove(e) {
 }
 
 function pcMove() {
-    console.log(emptyCells);
     let pcSelectedCell = emptyCells[Math.floor(Math.random() * emptyCells.length)]
     pcCombo.push(pcSelectedCell);
     const parent = Playground.children[pcSelectedCell];
@@ -61,7 +60,7 @@ function checkWinner(value) {
                 (cells[elArr[2]].dataset.value === value)) {
                 userTurn = false;
                 emptyCells = [];
-                let color = "#F66450";
+                let color = "#FD5A43";
                 let result = "You Lost 🥺"
                 if (value === "X") {
                     color = "#58D6BF";
