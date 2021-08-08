@@ -36,6 +36,7 @@ function userMove(e) {
 }
 
 function pcMove() {
+    console.log(emptyCells);
     let pcSelectedCell = emptyCells[Math.floor(Math.random() * emptyCells.length)]
     pcCombo.push(pcSelectedCell);
     const parent = Playground.children[pcSelectedCell];
@@ -60,7 +61,7 @@ function checkWinner(value) {
                 (cells[elArr[2]].dataset.value === value)) {
                 userTurn = false;
                 emptyCells = [];
-                let color = "#F9371C";
+                let color = "#F66450";
                 let result = "You Lost 🥺"
                 if (value === "X") {
                     color = "#58D6BF";
@@ -99,7 +100,7 @@ function findEmptyCells(array) {
         .forEach(el => emptyCells = [...emptyCells, ...el]);
 
     emptyCells = [... new Set(emptyCells)]
-        .filter(el => ![...userCombo, ...pcCombo].includes(el) && el);
+        .filter(el => ![...userCombo, ...pcCombo].includes(el));
 
     if (emptyCells.length === 0) {
         for (let i = 0; i < 9; i++) {
