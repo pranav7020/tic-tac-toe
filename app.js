@@ -27,11 +27,8 @@ function userMove(e) {
 
         createXOcell(parent, "X");
 
-        findEmptyCells(userSelectedCell);
+        findEmptyCells(userCombo);
 
-        // console.log("user : ", userCombo);
-        // console.log("pc : ", pcCombo);
-        // console.log("empty : ", emptyCells);
         if (userCombo.length >= 3) checkWinner("X");
 
         if (emptyCells.length > 0) {
@@ -45,8 +42,6 @@ function pcMove() {
     pcCombo.push(pcSelectedCell);
     const parent = Playground.children[pcSelectedCell];
 
-    findEmptyCells(pcSelectedCell);
-
     createXOcell(parent, "O");
     userTurn = true;
     if (pcCombo.length >= 3) checkWinner("O");
@@ -54,52 +49,67 @@ function pcMove() {
 
 function checkWinner(value) {
     let cells = Playground.children;
-    let winnerComboCells;
-
-    winCombo.some(elArr => {
-        let count = 0;
-
-        elArr.some(el => {
-            if (!cells[el].dataset.value || cells[el].dataset.value !== value) return true
-            count++;
-        })
-
-        if (count >= 3) {
-            winnerComboCells = elArr;
-            return true;
-        }
-    })
 
     if (emptyCells.length === 0 && !userTurn) {
         Title.innerText = "Tie!";
     }
 
-    if (winnerComboCells) {
-        userTurn = false;
-        emptyCells = [];
-        let color = "red";
-        let result = "You Lost 🥺"
-        if (value === "X") {
-            color = "green";
-            result = "You Won 🎉"
+    winCombo.some(elArr => {
+        // if a === b && b === c then true
+        if ((cells[elArr[0]].dataset.value === value) &&
+            (cells[elArr[1]].dataset.value === value) &&
+            (cells[elArr[2]].dataset.value === value)) {
+            userTurn = false;
+            emptyCells = [];
+            let color = "red";
+            let result = "You Lost 🥺"
+            if (value === "X") {
+                color = "green";
+                result = "You Won 🎉"
+            }
+            elArr.forEach(el => {
+                cells[el].style.backgroundColor = color
+            });
+            Title.innerText = result;
+            Button.innerText = "Play Again 🔥"
+            return true;
         }
-        console.log("winner combo : ", winnerComboCells);
-        winnerComboCells.forEach(el => {
-            cells[el].style.backgroundColor = color
-        });
-        Title.innerText = result;
-        Button.innerText = "Play Again 🔥"
-    }
+    })
+
 
 }
 
-function findEmptyCells(cell) {
+function findEmptyCells(array) {
+    emptyCells = [];
+    /* Easy */
+    // winCombo
+    //     .filter(el => el.includes(array[array.length - 1]))
+    //     .forEach(el => emptyCells = [...emptyCells, ...el]);
+
+    /* Hard */
     winCombo
-        .filter(el => el.includes(cell))
+        .filter(el => {
+            let count = 0;
+
+            userCombo.includes(el[0]) && count++;
+            userCombo.includes(el[1]) && count++;
+            userCombo.includes(el[2]) && count++;
+
+            if (userCombo.length >= 2 && count === 2) return el;
+            if (userCombo.length < 2 && count === 1) return el;
+        })
         .forEach(el => emptyCells = [...emptyCells, ...el]);
 
     emptyCells = [... new Set(emptyCells)]
         .filter(el => ![...userCombo, ...pcCombo].includes(el) && el);
+
+    if (emptyCells.length === 0) {
+        for (let i = 0; i < 9; i++) {
+            if (![...userCombo, ...pcCombo].includes(i))
+                emptyCells.push(i)
+        }
+        return
+    }
 }
 
 function createPlayground() {
@@ -129,7 +139,6 @@ function createXOcell(parent, value) {
 }
 
 function reset() {
-    console.log('reset');
     userCombo = [];
     pcCombo = [];
     emptyCells = [];
