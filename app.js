@@ -26,10 +26,8 @@ function userMove(e) {
         userCombo.push(userSelectedCell);
 
         createXOcell(parent, "X");
-
         findEmptyCells(userCombo);
-
-        if (userCombo.length >= 3) checkWinner("X");
+        checkWinner("X");
 
         if (emptyCells.length > 0) {
             setTimeout(pcMove, 300);
@@ -44,39 +42,39 @@ function pcMove() {
 
     createXOcell(parent, "O");
     userTurn = true;
-    if (pcCombo.length >= 3) checkWinner("O");
+    checkWinner("O");
 }
 
 function checkWinner(value) {
-    let cells = Playground.children;
+    if ([...userCombo, ...pcCombo].length >= 5) {
+        let cells = Playground.children;
 
-    if (emptyCells.length === 0 && !userTurn) {
-        Title.innerText = "Tie!";
-    }
-
-    winCombo.some(elArr => {
-        // if a === b && b === c then true
-        if ((cells[elArr[0]].dataset.value === value) &&
-            (cells[elArr[1]].dataset.value === value) &&
-            (cells[elArr[2]].dataset.value === value)) {
-            userTurn = false;
-            emptyCells = [];
-            let color = "red";
-            let result = "You Lost 🥺"
-            if (value === "X") {
-                color = "green";
-                result = "You Won 🎉"
-            }
-            elArr.forEach(el => {
-                cells[el].style.backgroundColor = color
-            });
-            Title.innerText = result;
-            Button.innerText = "Play Again 🔥"
-            return true;
+        if (emptyCells.length === 0 && !userTurn) {
+            Title.innerText = "✨ Tie! ✨";
         }
-    })
 
-
+        winCombo.some(elArr => {
+            // if a === b && b === c then true
+            if ((cells[elArr[0]].dataset.value === value) &&
+                (cells[elArr[1]].dataset.value === value) &&
+                (cells[elArr[2]].dataset.value === value)) {
+                userTurn = false;
+                emptyCells = [];
+                let color = "#F9371C";
+                let result = "You Lost 🥺"
+                if (value === "X") {
+                    color = "#58D6BF";
+                    result = "You Won 🎉"
+                }
+                elArr.forEach(el => {
+                    cells[el].style.backgroundColor = color
+                });
+                Title.innerText = result;
+                Button.innerText = "Play Again 🔥"
+                return true;
+            }
+        })
+    }
 }
 
 function findEmptyCells(array) {
