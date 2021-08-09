@@ -1,4 +1,4 @@
-const newCacheName = `XOXO-V-1.0`;
+const newCacheName = `XOXO-V-1.1`;
 
 const filesToCache = [
     `/`,
